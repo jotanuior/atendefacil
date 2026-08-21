@@ -1,0 +1,8 @@
+/* Preserva quebras de linha e espaços como foram digitados no editor. */
+.preview-bubble,
+.preview-user,
+.visitor-message,
+.timeline p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
