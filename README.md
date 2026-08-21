@@ -13,7 +13,7 @@ sudo bash /tmp/atendefacil-install/scripts/install-vps.sh
 
 O instalador cria uma senha forte para o primeiro administrador, procura automaticamente uma porta livre a partir da `3100`, grava a porta em `.env` e mantém banco e arquivos em volume persistente.
 
-Copie `deploy/nginx-atendefacil.conf.example` para `/etc/nginx/sites-available/atendefacil`, ajuste o domínio, habilite a configuração e gere o certificado HTTPS com Certbot.
+Copie `deploy/nginx-atendefacil.conf.example` para `/etc/nginx/sites-available/atendefacil`, ajuste a porta e habilite a configuração. Por padrão, o acesso será `http://172.29.3.35/atendefacil/`.
 
 ## Atualização
 
@@ -21,21 +21,28 @@ Copie `deploy/nginx-atendefacil.conf.example` para `/etc/nginx/sites-available/a
 sudo bash /opt/atendefacil/scripts/update-vps.sh
 ```
 
-## Recuperação de senha
+## Recuperação de senha por SMTP
 
 Configure no `.env`:
 
 ```env
-RESEND_API_KEY=sua-chave
-EMAIL_FROM=Atende Facil <atendimento@seu-dominio.com.br>
+APP_BASE_PATH=/atendefacil
+APP_PUBLIC_URL=http://172.29.3.35/atendefacil
+SMTP_HOST=mail.seu-dominio.com.br
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_STARTTLS=true
+SMTP_USER=atendimento@seu-dominio.com.br
+SMTP_PASSWORD=senha-da-conta
+SMTP_FROM=Atende Facil <atendimento@seu-dominio.com.br>
 ```
 
-O link enviado pelo botão “Esqueci minha senha” expira em uma hora e só pode ser usado uma vez.
+Use `SMTP_PORT=465`, `SMTP_SECURE=true` e `SMTP_STARTTLS=false` para SSL direto. Para porta 587, mantenha os valores do exemplo. O link enviado pelo botão “Esqueci minha senha” expira em uma hora e só pode ser usado uma vez.
 
 ## Embed sempre maximizado
 
 ```html
-<iframe src="https://seu-dominio.com.br/atendimento?widget=1"
+<iframe src="http://172.29.3.35/atendefacil/atendimento?widget=1"
   title="Atendimento"
   style="width:100%;height:650px;border:0;border-radius:16px">
 </iframe>

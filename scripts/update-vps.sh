@@ -6,6 +6,20 @@ if [[ "${EUID}" -ne 0 ]]; then echo "Execute como root: sudo APP_DIR=$APP_DIR ba
 cd "$APP_DIR"
 git fetch origin main
 git pull --ff-only origin main
+touch .env
+ensure_env(){
+ local key="$1" value="$2"
+ grep -q "^${key}=" .env || printf '%s=%s\n' "$key" "$value" >> .env
+}
+ensure_env APP_BASE_PATH /atendefacil
+ensure_env APP_PUBLIC_URL http://172.29.3.35/atendefacil
+ensure_env SMTP_HOST mail.seu-dominio.com.br
+ensure_env SMTP_PORT 587
+ensure_env SMTP_SECURE false
+ensure_env SMTP_STARTTLS true
+ensure_env SMTP_USER atendimento@seu-dominio.com.br
+ensure_env SMTP_PASSWORD troque-pela-senha-do-email
+ensure_env SMTP_FROM "Atende Facil <atendimento@seu-dominio.com.br>"
 port_in_use(){
  local port="$1"
  if command -v ss >/dev/null 2>&1; then ss -H -ltn | awk '{print $4}' | grep -Eq "[:.]${port}$" && return 0; fi

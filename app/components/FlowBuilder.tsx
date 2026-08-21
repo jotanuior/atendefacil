@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useMemo,useState} from "react";
+import {appPath} from "../lib/paths";
 
 type Kind="message"|"menu"|"image"|"video"|"audio"|"pdf"|"link"|"input"|"team"|"hours"|"end";
 type Option={id:string;label:string;target:string};
@@ -36,11 +37,11 @@ const initial:Flow={startId:"welcome",nodes:[
 export default function FlowBuilder(){
  const[flow,setFlow]=useState<Flow>(initial),[selected,setSelected]=useState("main"),[showTypes,setShowTypes]=useState(false);
  const[saving,setSaving]=useState(false),[published,setPublished]=useState(false),[test,setTest]=useState(false);
- useEffect(()=>{fetch("/api/admin/flow").then(r=>r.ok?r.json():null).then(d=>d?.flow?.config&&setFlow(d.flow.config)).catch(()=>{})},[]);
+ useEffect(()=>{fetch(appPath("/api/admin/flow")).then(r=>r.ok?r.json():null).then(d=>d?.flow?.config&&setFlow(d.flow.config)).catch(()=>{})},[]);
  const node=useMemo(()=>flow.nodes.find(n=>n.id===selected)??flow.nodes[0],[flow,selected]);
  const patch=(changes:Partial<Node>)=>setFlow(f=>({...f,nodes:f.nodes.map(n=>n.id===selected?{...n,...changes}:n)}));
- async function upload(file?:File){if(!file)return;const form=new FormData();form.append("file",file);setSaving(true);const r=await fetch("/api/admin/upload",{method:"POST",body:form});const d=await r.json();setSaving(false);if(r.ok)patch({url:d.url,caption:node.caption||d.name});else alert(d.error||"Não foi possível enviar o arquivo.")}
- async function save(publish=false){setSaving(true);const r=await fetch("/api/admin/flow",{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify({name:"Fluxo principal",config:flow,publish})});setSaving(false);if(r.ok&&publish)setPublished(true)}
+ async function upload(file?:File){if(!file)return;const form=new FormData();form.append("file",file);setSaving(true);const r=await fetch(appPath("/api/admin/upload"),{method:"POST",body:form});const d=await r.json();setSaving(false);if(r.ok)patch({url:d.url,caption:node.caption||d.name});else alert(d.error||"Não foi possível enviar o arquivo.")}
+ async function save(publish=false){setSaving(true);const r=await fetch(appPath("/api/admin/flow"),{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify({name:"Fluxo principal",config:flow,publish})});setSaving(false);if(r.ok&&publish)setPublished(true)}
  function addNode(kind:Kind){const meta=kinds.find(k=>k.kind===kind)!;const id=`${kind}-${Date.now()}`;const created:Node={id,title:meta.name,kind,text:kind==="menu"?"Escolha uma opção:":kind==="input"?"Digite sua resposta:":kind==="team"?"Atendimento classificado com sucesso.":kind==="end"?"Atendimento finalizado. Obrigado!":"Digite aqui a mensagem.",options:kind==="menu"?[{id:`o-${Date.now()}`,label:"Nova opção",target:flow.startId}]:undefined};setFlow(f=>({...f,nodes:[...f.nodes,created]}));setSelected(id);setShowTypes(false)}
  function duplicate(){const id=`${node.kind}-${Date.now()}`;setFlow(f=>({...f,nodes:[...f.nodes,{...node,id,title:`${node.title} (cópia)`,options:node.options?.map(o=>({...o,id:`${o.id}-c`}))}]}));setSelected(id)}
  function remove(){if(node.id===flow.startId)return;setFlow(f=>({...f,nodes:f.nodes.filter(n=>n.id!==node.id).map(n=>({...n,next:n.next===node.id?flow.startId:n.next,options:n.options?.map(o=>o.target===node.id?{...o,target:flow.startId}:o)}))}));setSelected(flow.startId)}

@@ -26,11 +26,14 @@ read -r -p "Nome do administrador [Administrador]: " ADMIN_NAME
 ADMIN_NAME="${ADMIN_NAME:-Administrador}"
 sed -i "s|ADMIN_EMAIL=.*|ADMIN_EMAIL=${ADMIN_EMAIL}|" .env
 sed -i "s|ADMIN_NAME=.*|ADMIN_NAME=${ADMIN_NAME}|" .env
+read -r -p "Endereço público [http://172.29.3.35/atendefacil]: " APP_PUBLIC_URL
+APP_PUBLIC_URL="${APP_PUBLIC_URL:-http://172.29.3.35/atendefacil}"
+sed -i "s|^APP_PUBLIC_URL=.*|APP_PUBLIC_URL=${APP_PUBLIC_URL}|" .env
 docker compose up -d --build
 echo "Atende Fácil instalado em $APP_DIR"
 echo "Porta livre selecionada automaticamente: $APP_PORT"
-echo "Acesso interno: http://127.0.0.1:${APP_PORT}"
+echo "Acesso pelo Nginx: ${APP_PUBLIC_URL}"
 echo "Usuário inicial: $ADMIN_EMAIL"
 echo "Senha inicial: $ADMIN_PASSWORD"
-echo "No Nginx externo, use: proxy_pass http://127.0.0.1:${APP_PORT};"
-echo "Depois ative HTTPS com Certbot."
+echo "No Nginx externo, encaminhe /atendefacil/ para http://127.0.0.1:${APP_PORT} sem remover o prefixo."
+echo "Configure SMTP no arquivo ${APP_DIR}/.env e execute scripts/update-vps.sh."

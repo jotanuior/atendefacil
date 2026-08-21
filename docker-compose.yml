@@ -1,6 +1,9 @@
 services:
   atendefacil:
-    build: .
+    build:
+      context: .
+      args:
+        APP_BASE_PATH: ${APP_BASE_PATH:-/atendefacil}
     container_name: atendefacil
     restart: unless-stopped
     env_file: .env

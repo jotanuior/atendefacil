@@ -1,5 +1,7 @@
 FROM node:22-bookworm-slim AS build
 WORKDIR /app
+ARG APP_BASE_PATH=/atendefacil
+ENV APP_BASE_PATH=${APP_BASE_PATH}
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
