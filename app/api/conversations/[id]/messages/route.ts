@@ -1,7 +1,7 @@
 import {asc,eq} from "drizzle-orm";
 import {getDb} from "../../../../../db";
 import {auditEvents,conversations,messages} from "../../../../../db/schema";
-import {getChatGPTUser} from "../../../../chatgpt-auth";
+import {getAdminUser} from "../../../../lib/admin-auth";
 export const dynamic="force-dynamic";
 export async function GET(request:Request,{params}:{params:Promise<{id:string}>}){
  const {id}=await params;const token=new URL(request.url).searchParams.get("token");const admin=await getAdminUser();const db=getDb();
@@ -14,9 +14,9 @@ export async function GET(request:Request,{params}:{params:Promise<{id:string}>}
 }
 export async function POST(request:Request,{params}:{params:Promise<{id:string}>}){
  const {id}=await params;const body=await request.json() as {token?:string;content?:string;sender?:string};const content=body.content?.trim();if(!content)return Response.json({error:"Mensagem vazia"},{status:400});
- const db=getDb();const admin=await getAdminUser();if(admin)return Response.json({error:"Este sistema funciona somente com o bot. O histórico não permite respostas manuais."},{status:405});const [conversation]=await db.select().from(conversations).where(eq(conversations.id,id)).limit(1);
+ const db=getDb();const [conversation]=await db.select().from(conversations).where(eq(conversations.id,id)).limit(1);
  if(!conversation)return Response.json({error:"Atendimento não encontrado"},{status:404});
- if(!admin&&conversation.visitorToken!==body.token)return Response.json({error:"Não autorizado"},{status:401});
+ if(conversation.visitorToken!==body.token)return Response.json({error:"Não autorizado"},{status:401});
  const sender="VISITOR";const [message]=await db.insert(messages).values({conversationId:id,sender,content}).returning();
  await db.update(conversations).set({lastMessageAt:new Date().toISOString(),status:"BOT"}).where(eq(conversations.id,id));
  return Response.json({message},{status:201});

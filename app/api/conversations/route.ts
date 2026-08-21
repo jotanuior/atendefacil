@@ -1,7 +1,7 @@
 import {asc,desc,eq} from "drizzle-orm";
 import {getDb} from "../../../db";
 import {auditEvents,botSteps,conversations,messages} from "../../../db/schema";
-import {getChatGPTUser} from "../../chatgpt-auth";
+import {getAdminUser} from "../../lib/admin-auth";
 export const dynamic="force-dynamic";
 function id(){return crypto.randomUUID()}
 function protocol(){const d=new Date();return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,"0")}${String(d.getUTCDate()).padStart(2,"0")}-${crypto.randomUUID().slice(0,6).toUpperCase()}`}

@@ -1,7 +1,7 @@
 import {asc} from "drizzle-orm";
 import {getDb} from "../../../../db";
 import {botSteps} from "../../../../db/schema";
-import {getChatGPTUser} from "../../../chatgpt-auth";
+import {getAdminUser} from "../../../lib/admin-auth";
 export const dynamic="force-dynamic";
 async function guard(){return getAdminUser()}
 export async function GET(){if(!await guard())return Response.json({error:"Não autorizado"},{status:401});const rows=await getDb().select().from(botSteps).orderBy(asc(botSteps.position));return Response.json({steps:rows})}
