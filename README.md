@@ -11,7 +11,7 @@ git clone git@github.com:jotanuior/atendefacil.git /tmp/atendefacil-install
 sudo bash /tmp/atendefacil-install/scripts/install-vps.sh
 ```
 
-O instalador cria uma senha forte para o primeiro administrador, inicia o container somente em `127.0.0.1:3100` e mantém banco e arquivos em volume persistente.
+O instalador cria uma senha forte para o primeiro administrador, procura automaticamente uma porta livre a partir da `3100`, grava a porta em `.env` e mantém banco e arquivos em volume persistente.
 
 Copie `deploy/nginx-atendefacil.conf.example` para `/etc/nginx/sites-available/atendefacil`, ajuste o domínio, habilite a configuração e gere o certificado HTTPS com Certbot.
 
