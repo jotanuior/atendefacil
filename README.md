@@ -43,6 +43,8 @@ SMTP_FROM=Atende Facil <atendimento@seu-dominio.com.br>
 
 Use `SMTP_PORT=465`, `SMTP_SECURE=true` e `SMTP_STARTTLS=false` para SSL direto. Para porta 587, mantenha os valores do exemplo. O link enviado pelo botão “Esqueci minha senha” expira em uma hora e só pode ser usado uma vez.
 
+O entrypoint do Docker repassa automaticamente as variáveis do `.env` ao ambiente local do Worker. Alterações no SMTP exigem apenas `docker compose up -d --force-recreate`; alterações no entrypoint exigem reconstruir a imagem.
+
 ## Embed sempre maximizado
 
 ```html
