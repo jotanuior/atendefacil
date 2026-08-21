@@ -43,6 +43,8 @@ SMTP_FROM=Atende Facil <atendimento@seu-dominio.com.br>
 
 Use `SMTP_PORT=465`, `SMTP_SECURE=true` e `SMTP_STARTTLS=false` para SSL direto. Para porta 587, mantenha os valores do exemplo. O link enviado pelo botão “Esqueci minha senha” expira em uma hora e só pode ser usado uma vez.
 
+Mantenha `SMTP_TLS_REJECT_UNAUTHORIZED=true` quando o certificado do servidor for válido. Somente em redes controladas com certificado próprio ou cadeia autoassinada, configure `false`. Na VPS, o envio passa por um relay Nodemailer interno ligado exclusivamente em `127.0.0.1`.
+
 O entrypoint do Docker repassa automaticamente as variáveis do `.env` ao ambiente local do Worker. Alterações no SMTP exigem apenas `docker compose up -d --force-recreate`; alterações no entrypoint exigem reconstruir a imagem.
 
 ## Embed sempre maximizado

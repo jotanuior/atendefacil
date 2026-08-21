@@ -20,6 +20,7 @@ ensure_env SMTP_STARTTLS true
 ensure_env SMTP_USER atendimento@seu-dominio.com.br
 ensure_env SMTP_PASSWORD troque-pela-senha-do-email
 ensure_env SMTP_FROM "Atende Facil <atendimento@seu-dominio.com.br>"
+ensure_env SMTP_TLS_REJECT_UNAUTHORIZED true
 port_in_use(){
  local port="$1"
  if command -v ss >/dev/null 2>&1; then ss -H -ltn | awk '{print $4}' | grep -Eq "[:.]${port}$" && return 0; fi

@@ -7,6 +7,11 @@ function escapeHeader(value:string){return value.replace(/[\r\n]+/g," ").trim()}
 function encodeHeader(value:string){return `=?UTF-8?B?${btoa(unescape(encodeURIComponent(value)))}?=`}
 
 export async function sendPasswordResetEmail(runtime:Runtime,to:string,name:string,url:string){
+  if(runtime.SMTP_RELAY_URL){
+    const relay=await fetch(runtime.SMTP_RELAY_URL,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({to,name,url})});
+    if(!relay.ok)throw new Error(`Relay SMTP recusou o envio (${relay.status}): ${await relay.text()}`);
+    return;
+  }
   const host=runtime.SMTP_HOST?.trim(),user=runtime.SMTP_USER?.trim(),password=runtime.SMTP_PASSWORD;
   const from=runtime.SMTP_FROM?.trim();
   if(!host||!user||!password||!from)throw new Error("SMTP não configurado");

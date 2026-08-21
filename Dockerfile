@@ -15,7 +15,7 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/drizzle ./drizzle
 COPY --from=build /app/wrangler.jsonc ./wrangler.jsonc
-COPY --from=build /app/scripts/docker-entrypoint.sh ./scripts/docker-entrypoint.sh
+COPY --from=build /app/scripts/docker-entrypoint.sh /app/scripts/smtp-relay.mjs ./scripts/
 RUN chmod +x ./scripts/docker-entrypoint.sh
 EXPOSE 3000
 CMD ["./scripts/docker-entrypoint.sh"]
