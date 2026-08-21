@@ -1,0 +1,2 @@
+import {eq} from "drizzle-orm";import {cookies} from "next/headers";import {getDb} from "../../../../db";import {adminSessions} from "../../../../db/schema";import {hashToken,SESSION_COOKIE} from "../../../lib/admin-auth";
+export async function POST(){const jar=await cookies(),token=jar.get(SESSION_COOKIE)?.value;if(token)await getDb().delete(adminSessions).where(eq(adminSessions.tokenHash,await hashToken(token)));jar.delete(SESSION_COOKIE);return Response.json({ok:true})}

@@ -1,0 +1,1 @@
+import {getAdminUser} from "../../../lib/admin-auth";export async function GET(){const user=await getAdminUser();return user?Response.json({user}):Response.json({error:"Não autenticado"},{status:401})}
