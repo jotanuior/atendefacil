@@ -17,6 +17,8 @@ Copie `deploy/nginx-atendefacil.conf.example` para `/etc/nginx/sites-available/a
 
 O bloco específico `location ^~ /atendefacil/assets/` é obrigatório. Ele encaminha os arquivos CSS e JavaScript para `/assets/` no container, evitando erro 404 ao hospedar o sistema em uma subpasta.
 
+O `wrangler.jsonc` já publica `dist/client` como diretório de assets. Depois de atualizar essa configuração, reconstrua a imagem Docker para que o arquivo seja copiado para o container.
+
 ## Atualização
 
 ```bash
