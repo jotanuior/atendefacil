@@ -15,6 +15,8 @@ O instalador cria uma senha forte para o primeiro administrador, procura automat
 
 Copie `deploy/nginx-atendefacil.conf.example` para `/etc/nginx/sites-available/atendefacil`, ajuste a porta e habilite a configuração. Por padrão, o acesso será `http://172.29.3.35/atendefacil/`.
 
+O bloco específico `location ^~ /atendefacil/assets/` é obrigatório. Ele encaminha os arquivos CSS e JavaScript para `/assets/` no container, evitando erro 404 ao hospedar o sistema em uma subpasta.
+
 ## Atualização
 
 ```bash

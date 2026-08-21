@@ -1,22 +1,1 @@
-server {
-    listen 80;
-    server_name 172.29.3.35;
-    client_max_body_size 25M;
-
-    location = /atendefacil {
-        return 301 /atendefacil/;
-    }
-
-    location /atendefacil/ {
-        # Troque 3100 pela APP_PORT mostrada pelo instalador.
-        # Sem barra apÃ³s a porta: o prefixo /atendefacil deve ser preservado.
-        proxy_pass http://127.0.0.1:3100;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Prefix /atendefacil;
-        proxy_read_timeout 300s;
-    }
-}
+¦¸§µ÷6W'fW"°¢Æ—7FVâƒ°¢6W'fW%öæÖRs"ã#’ã2ã3S°¢6Æ–VçEöÖ…ö&öG•÷6—¦R#TÓ° ¢Æö6F–öâÒöFVæFVf6–Â°¢&WGW&â3öFVæFVf6–Âó°¢Ð ¢2òf–æW‡BV&Æ–6÷2'V—f÷26ö×–ÆF÷2–çFW&æÖVçFRVÒö76WG2òà¢2W7F&Vw&&VÖ÷fRVæ2ò&Vf—†òF÷2'V—f÷2W7L:F–6÷2à¢Æö6F–öâçâöFVæFVf6–Âö76WG2ò°¢&÷‡•÷72‡GG¢òó#rããã£3ö76WG2ó°¢&÷‡•ö‡GG÷fW'6–öâã°¢&÷‡•÷6WEö†VFW"†÷7BF†÷7C°¢&÷‡•ö66†U÷fÆ–B#ƒ°¢FEö†VFW"66†RÔ6öçG&öÂ'V&Æ–2ÂÖ‚ÖvSÓ3c#°¢Ð ¢Æö6F–öâöFVæFVf6–Âò°¢2G&÷VR3VÆõõ%BÖ÷7G&FVÆò–ç7FÆF÷"à¢26VÒ&'&;72÷'F¢ò&Vf—†òöFVæFVf6–ÂFWfR6W"&W6W'fFòà¢&÷‡•÷72‡GG¢òó#rããã£3°¢&÷‡•ö‡GG÷fW'6–öâã°¢&÷‡•÷6WEö†VFW"†÷7BF†÷7C°¢&÷‡•÷6WEö†VFW"‚Õ&VÂÔ•G&VÖ÷FUöFG#°¢&÷‡•÷6WEö†VFW"‚Ôf÷'v&FVBÔf÷"G&÷‡•öFE÷…öf÷'v&FVEöf÷#°¢&÷‡•÷6WEö†VFW"‚Ôf÷'v&FVBÕ&÷FòG66†VÖS°¢&÷‡•÷6WEö†VFW"‚Ôf÷'v&FVBÕ&Vf—‚öFVæFVf6–Ã°¢&÷‡•÷&VE÷F–ÖV÷WB33°¢Ð§Ð 
